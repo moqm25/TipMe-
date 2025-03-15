@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tip for Therapy with Moiez</title>
+  <title>Tip Options</title>
   <style>
     body {
       margin: 0;
@@ -11,13 +11,12 @@
       font-family: Arial, sans-serif;
       background: #f8f9fa;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
     }
     .container {
-      background: #ffffff;
+      background: #fff;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -26,8 +25,14 @@
     }
     h1 {
       font-size: 24px;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       text-align: center;
+    }
+    p {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 16px;
+      color: #555;
     }
     .tip-options {
       display: flex;
@@ -62,7 +67,10 @@
 </head>
 <body>
   <div class="container">
-    <h1>$5 for therapy with Moiez</h1>
+    <!-- These elements will be populated based on URL parameters -->
+    <h1 id="tipHeader">$5 for therapy with Moiez</h1>
+    <p id="tipDetails"></p>
+    
     <div class="tip-options">
       <button onclick="handleTip('15%')">15% Tip</button>
       <button onclick="handleTip('25%')">25% Tip</button>
@@ -74,9 +82,25 @@
     </div>
   </div>
   <script>
+    // Parse URL parameters to auto-populate tip information
+    const params = new URLSearchParams(window.location.search);
+    if(params.has('receiver') && params.has('payer') && params.has('amount')) {
+      const receiver = params.get('receiver');
+      const payer = params.get('payer');
+      const amount = params.get('amount');
+      const reason = params.get('reason');
+      
+      document.getElementById('tipHeader').innerText = `${payer} is tipping ${receiver}`;
+      let detailsText = `Amount: $${amount}`;
+      if(reason && reason.trim() !== "") {
+        detailsText += ` | Reason: ${reason}`;
+      }
+      document.getElementById('tipDetails').innerText = detailsText;
+    }
+    
     function handleTip(tip) {
       console.log("Selected tip: " + tip);
-      // Optionally, store tip info or pass as a query parameter
+      // You could pass tip info along if desired; for now simply go to the credit card page.
       window.location.href = "creditcard.html";
     }
     
